@@ -31,7 +31,7 @@ scope.write('header 1') # turns on the waveform data
 waveform_data=scope.query('WFMOutpre?')
 
 #get the actual data
-scope.query_binary_values('curve?', datatype='i', container=np.array)
+bin_wave=scope.query_binary_values('curve?', datatype='i', container=np.array)
 # the data is represented as an array of signed two byte integers where the integer represents which discrete voltage level the reading is
 # time values are not given instead they are assuemd to be evenly ditributed
 
@@ -48,7 +48,7 @@ rm.close()
 
 #save the binary data 
 print("saving file to \data")
-bin_wave.tofile("data\ch1.bin")
+bin_wave.tofile("data\ch1_lite.bin")
 
 #save the scaling data in seperate value so that we can convert later
 f = open("data\paramiters.txt", "a")

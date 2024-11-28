@@ -38,11 +38,13 @@ scope.write('acquire:state 0') # stop
 scope.write('acquire:stopafter SEQUENCE') # single
 scope.write('acquire:state 1') # run
 
+r = scope.query('*opc?')
+
 #transfer the data to the osciliscope
 print("\ttransfering data")
 scope.write('data:source CH1') # read CH1
-bin_wave = scope.query_binary_values('curve?', bin_wave = scope.query_binary_values('curve?', datatype='i', container=np.array)
-# the data is represented as an array of signed two byte integers where the integer represents which discrete voltage level the reading is
+bin_wave = scope.query_binary_values('curve?', datatype='i', container=np.array)
+# the data is represented as an array of signed one byte integers where the integer represents which discrete voltage level the reading is
 # time values are not given instead they are assuemd to be evenly ditributed
 
 # retrieve scaling factors
@@ -50,7 +52,7 @@ xzero = str(scope.query('wfmoutpre:xzero?'))
 xincr = str(scope.query('wfmoutpre:xincr?'))
 xunit = str(scope.query('wfmoutpre:xunit?'))
 
-vzero = str(scope.query('wfmoutpre:yzero?'))
+yzero = str(scope.query('wfmoutpre:yzero?'))
 ymult = str(scope.query('wfmoutpre:ymult?'))
 yunit = str(scope.query('wfmoutpre:yunit?'))
 

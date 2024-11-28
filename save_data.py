@@ -23,12 +23,18 @@ print("succesfully conected to", scope.query("*IDN?"))
 print("getting data")
 
 #calculate the period
-frequency=float(scope.query('trigger:frequency?'))
+r = scope.query('*opc?')
+print("trig freq =", scope.query('trigger:frequency?')[18:].strip())
+frequency=float(scope.query('trigger:frequency?')[18:].strip())
 T=1/frequency
-print("\testimated time:", T*N_MEASUREMENTS)
 
+print("period =", T)
+print("freq =", frequency)
+
+T=0.2
+print("\testimated time:", T*N_MEASUREMENTS)
 for i in range(N_MEASUREMENTS):
-    print("\ttakin {}th measurement".format(i))
+    print("\ttaking {}th measurement".format(i))
 
     #wait for one period so that we know its fresh data
     time.sleep(T)
@@ -36,12 +42,13 @@ for i in range(N_MEASUREMENTS):
     #measure CH1 data
     scope.write('data:source CH1')
     scope.write('data:start 1')
+    scope.write('horizontal:recordlength {}'.format(N_POINTS))
     scope.write('data:stop {}'.format(N_POINTS))
     scope.write('wfmoutpre:byt_nr 1')
     scope.write('header 1')
 
     waveform_data=scope.query('WFMOutpre?')
-    scope.query_binary_values('curve?', datatype='i', container=np.array)
+    bin_wave=scope.query_binary_values('curve?', datatype='i', container=np.array)
     
     bin_wave.tofile("data\ch1_{}.bin".format(i))
 
@@ -52,6 +59,7 @@ for i in range(N_MEASUREMENTS):
     #measure CH2 data
     scope.write('data:source CH2')
     scope.write('data:start 1')
+    scope.write('horizontal:recordlength {}'.format(N_POINTS))
     scope.write('data:stop {}'.format(N_POINTS))
     scope.write('wfmoutpre:byt_nr 1')
     scope.write('header 1')
