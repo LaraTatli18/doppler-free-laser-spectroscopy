@@ -65,7 +65,7 @@ for i in range(N_MEASUREMENTS):
     scope.write('header 1')
 
     waveform_data=scope.query('WFMOutpre?')
-    scope.query_binary_values('curve?', datatype='i', container=np.array)
+    bin_wave = scope.query_binary_values('curve?', datatype='i', container=np.array)
 
     bin_wave.tofile("data\ch2_{}.bin".format(i))
 
