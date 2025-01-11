@@ -94,7 +94,7 @@ from lmfit import create_params
 from lmfit import minimize
 from lmfit import Parameters
 
-def detuning(x,data,uncertainty):
+def detuning(x,data,uncertainty,Ai=5, phi0i=4, phi1i=50, C0i=10, C1i=-7):
     def model(params,x,order):
         A=0.
         phi=0.
@@ -143,7 +143,7 @@ def detuning(x,data,uncertainty):
 
         return (A0 + A1*x + A2*x**2 + A3*x**3 +A4*x**4) * np.cos((phi0 + phi1*x + phi2*x**2 + phi3*x**3 +phi4*x**4)) + (C0 + C1*x + C2*x**2 + C3*x**3 +C4*x**4)
     
-    params = create_params(A0=5, A1=0, A2=0, A3=0, A4=0,phi0=1, phi1 =23.4, phi2=0, phi3=0, phi4=0, C0 = 10, C1=-7, C2=0, C3=0,C4=0)
+    params = create_params(A0=Ai, A1=0, A2=0, A3=0, A4=0,phi0=phi0i, phi1 = phi1i, phi2=0, phi3=0, phi4=0, C0 = C0i, C1=C1i, C2=0, C3=0,C4=0)
 
     def heat(params):
         hot_params=(params).copy()
@@ -192,4 +192,9 @@ def detuning(x,data,uncertainty):
 
         return phi0 + phi1*x + phi2*x**2 + phi3*x**3 +phi4*x**4
     
+    plt.scatter(x,data,s=2)
+    plt.plot(x,quartic(out4.params,x),color='r')
+    plt.plot(x,linear(params,x),color='g')
+    plt.show()
+
     return phi

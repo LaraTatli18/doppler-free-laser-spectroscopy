@@ -4,7 +4,7 @@ from calibrate import calibrate
 def graph(dir,i1,f1,i2,f2):
 
     print("\n")
-
+    
     #load in the data
     data,calibration=load(dir)
 
